@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { AuthController } from './controller'
 import { AuthDatasourceImpl, AuthRepositoryImpl } from '../../application'
+import { AuthMiddleware } from '../middlewares/auth.middleware'
 
 export class AuthRoutes {
   static get routes(): Router {
@@ -13,6 +14,8 @@ export class AuthRoutes {
     // definir todas la rutas principales
     router.post('/login', controller.loginUser)
     router.post('/register', controller.registerUser)
+
+    router.get('/', AuthMiddleware.validateJwt, controller.getUsers)
 
     return router
   }
